@@ -1,9 +1,7 @@
 lmdb
-pillow
+pillow<10
 nltk
 natsort
-torch==1.9.0
-torchvision
 six
 lmdb
 requests
