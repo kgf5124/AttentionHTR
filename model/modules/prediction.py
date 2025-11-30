@@ -75,6 +75,11 @@ class AttentionCell(nn.Module):
         e = self.score(torch.tanh(batch_H_proj + prev_hidden_proj))  # batch_size x num_encoder_step * 1
 
         alpha = F.softmax(e, dim=1)
+        #### FIRST MOD (Soften attention)
+        #alpha = F.softmax(e / 2.0, dim=1)
+        #### Second mod (Sharpen Attention)
+        #alpha = F.softmax(e * 2.0, dim=1)
+        
         context = torch.bmm(alpha.permute(0, 2, 1), batch_H).squeeze(1)  # batch_size x num_channel
         concat_context = torch.cat([context, char_onehots], 1)  # batch_size x (num_channel + num_embedding)
         cur_hidden = self.rnn(concat_context, prev_hidden)
